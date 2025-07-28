@@ -172,7 +172,7 @@ export default function Playground({ session }) {
               </div>
             )}
             {code.jsx ? (
-              <div className="component-preview-container p-4 sm:p-8 bg-white rounded-xl border border-black/10 shadow-inner min-w-[200px] min-h-[100px] max-w-full max-h-full flex items-center justify-center">
+              <div className="component-preview-container bg-white rounded-xl border border-black/10 shadow-inner max-w-full w-full flex items-center justify-center" style={{ maxHeight: '60vh', minHeight: '100px', overflowY: 'auto' }}>
                 <style dangerouslySetInnerHTML={{ __html: code.css }} />
                 <LiveProvider code={code.jsx} noInline>
                   <LivePreview className="w-full h-full" />
@@ -233,4 +233,4 @@ export default function Playground({ session }) {
       </main>
     </div>
   );
-} 
+}

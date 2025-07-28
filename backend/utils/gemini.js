@@ -13,11 +13,7 @@ export async function generateComponent({ prompt, chat = [], code = {} }) {
     'gpt-3.5': 'openai/gpt-3.5-turbo'          // Fastest but lower quality
   };
   
-  // Use environment variable or default to gpt-4o-mini
-  const modelKey = process.env.AI_MODEL || 'gpt-4o-mini';
-  const selectedModel = MODEL_OPTIONS[modelKey] || MODEL_OPTIONS['gpt-4o-mini'];
-  
-  console.log(`🤖 Using AI Model: ${selectedModel} (key: ${modelKey})`);
+  const selectedModel = MODEL_OPTIONS['gpt-4o-mini']; // Change this to switch models
 
   // Add system message to instruct AI on format
   const messages = [
@@ -133,8 +129,6 @@ export async function generateComponent({ prompt, chat = [], code = {} }) {
     jsx,
     css,
     raw: text,
-    model: selectedModel, // Include model info in response
-    modelKey: modelKey    // Include model key for easy reference
   };
 }
 
