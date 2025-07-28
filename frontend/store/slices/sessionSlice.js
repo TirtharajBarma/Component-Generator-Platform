@@ -27,8 +27,8 @@ const sessionSlice = createSlice({
     // Current session management
     setCurrentSession: (state, action) => {
       state.currentSession = action.payload;
-      state.chat = action.payload.chat || [];
-      state.code = action.payload.code || { jsx: '', css: '' };
+      state.chat = action.payload?.chat || [];
+      state.code = action.payload?.code || { jsx: '', css: '' };
     },
     clearCurrentSession: (state) => {
       state.currentSession = null;

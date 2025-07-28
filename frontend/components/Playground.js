@@ -173,8 +173,8 @@ export default function Playground({ session }) {
             )}
             {code.jsx ? (
               <div className="component-preview-container p-4 sm:p-8 bg-white rounded-xl border border-black/10 shadow-inner min-w-[200px] min-h-[100px] max-w-full max-h-full flex items-center justify-center">
+                <style dangerouslySetInnerHTML={{ __html: code.css }} />
                 <LiveProvider code={code.jsx} noInline>
-                  <style scoped>{code.css}</style>
                   <LivePreview className="w-full h-full" />
                 </LiveProvider>
               </div>

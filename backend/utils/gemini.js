@@ -5,6 +5,20 @@ export async function generateComponent({ prompt, chat = [], code = {} }) {
   const apiKey = process.env.OPENROUTER_API_KEY;
   if (!apiKey) throw new Error('Missing OpenRouter API key');
 
+  // Model options (you can change this for better results)
+  const MODEL_OPTIONS = {
+    'gpt-4o-mini': 'openai/gpt-4o-mini',        // Recommended: Fast and good quality
+    'gpt-4': 'openai/gpt-4',                    // Best quality but slower/expensive
+    'claude-3-haiku': 'anthropic/claude-3-haiku', // Good alternative
+    'gpt-3.5': 'openai/gpt-3.5-turbo'          // Fastest but lower quality
+  };
+  
+  // Use environment variable or default to gpt-4o-mini
+  const modelKey = process.env.AI_MODEL || 'gpt-4o-mini';
+  const selectedModel = MODEL_OPTIONS[modelKey] || MODEL_OPTIONS['gpt-4o-mini'];
+  
+  console.log(`🤖 Using AI Model: ${selectedModel} (key: ${modelKey})`);
+
   // Add system message to instruct AI on format
   const messages = [
     {
@@ -24,21 +38,29 @@ export async function generateComponent({ prompt, chat = [], code = {} }) {
       \`\`\`
 
       \`\`\`css
-      /* Scope all styles under .component-container to avoid affecting the playground UI */
+      /* IMPORTANT: All styles must be scoped under .component-container */
       .component-container {
-        /* Container styles if needed */
+        /* Base container styles */
+        padding: 20px;
+        box-sizing: border-box;
+      }
+
+      .component-container .title {
+        /* Example: Scope all classes under .component-container */
       }
 
       .component-container button {
-        /* Button styles scoped to component only */
-      }
-
-      .component-container .your-class-name {
-        /* All your component styles should be scoped under .component-container */
+        /* Example: Scope all elements under .component-container */
       }
       \`\`\`
 
-      IMPORTANT: Always wrap your JSX in a div with className="component-container" and scope ALL CSS rules under .component-container to prevent affecting the playground UI. Use specific class names for your elements and always prefix CSS selectors with .component-container`
+      CRITICAL RULES:
+      1. ALWAYS wrap your entire component in a div with className="component-container"
+      2. ALL CSS selectors MUST start with .component-container
+      3. Use proper CSS syntax - no syntax errors allowed
+      4. Use semantic class names for your elements
+      5. Make components responsive and accessible
+      6. Use modern CSS features like flexbox, grid when appropriate`
     }
   ];
 
@@ -55,10 +77,10 @@ export async function generateComponent({ prompt, chat = [], code = {} }) {
   // Add the new prompt as the last user message
   let fullPrompt = prompt;
   if (code.jsx || code.css) {
-    fullPrompt += `\n\nCurrent JSX:\n\`\`\`jsx\n${code.jsx || ''}\n\`\`\`\n\nCurrent CSS:\n\`\`\`css\n${code.css || ''}\n\`\`\``;
+    fullPrompt += '\n\nCurrent JSX:\n```jsx\n' + (code.jsx || '') + '\n```\n\nCurrent CSS:\n```css\n' + (code.css || '') + '\n```';
   }
   
-  fullPrompt += `\n\nPlease respond with the updated JSX and CSS code in the format specified.`;
+  fullPrompt += '\n\nPlease respond with the updated JSX and CSS code in the format specified.';
   
   if (fullPrompt && typeof fullPrompt === 'string') {
     messages.push({ role: 'user', content: fullPrompt });
@@ -79,8 +101,10 @@ export async function generateComponent({ prompt, chat = [], code = {} }) {
       'X-Title': 'Component Playground'
     },
     body: JSON.stringify({
-      model: 'openai/gpt-3.5-turbo',
-      messages
+      model: selectedModel,
+      messages,
+      temperature: 0.3, // Lower temperature for more consistent code generation
+      max_tokens: 2000   // Sufficient for component generation
     })
   });
 
@@ -109,6 +133,8 @@ export async function generateComponent({ prompt, chat = [], code = {} }) {
     jsx,
     css,
     raw: text,
+    model: selectedModel, // Include model info in response
+    modelKey: modelKey    // Include model key for easy reference
   };
 }
 

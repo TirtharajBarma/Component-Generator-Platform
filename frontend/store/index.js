@@ -34,11 +34,16 @@ export const store = configureStore({
   reducer: persistedReducer,
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware({
+      // Prevent hydration issues
+      immutableCheck: { warnAfter: 128 },
       serializableCheck: {
+        warnAfter: 128,
         ignoredActions: [FLUSH, REHYDRATE, PAUSE, PERSIST, PURGE, REGISTER],
         ignoredPaths: ['session.chat.timestamp', 'ui.notifications.timestamp'],
       },
     }),
+  // Only enable devtools in development
+  devTools: process.env.NODE_ENV !== 'production',
 });
 
 export const persistor = persistStore(store);
