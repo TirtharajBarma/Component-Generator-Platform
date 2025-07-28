@@ -1,0 +1,65 @@
+@import 'tailwindcss';
+
+/* Reset and base styles */
+html, body {
+  height: 100%;
+  margin: 0;
+  padding: 0;
+  font-family: 'Inter', 'Helvetica Neue', Arial, sans-serif;
+  background: #fff;
+  color: #111;
+  min-height: 100vh;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  transition: background 0.2s, color 0.2s;
+}
+
+*, *::before, *::after {
+  box-sizing: border-box;
+}
+
+a {
+  color: #111;
+  text-decoration: underline;
+  transition: color 0.2s;
+}
+a:hover {
+  color: #555;
+}
+
+button, input, textarea, select {
+  font-family: inherit;
+  outline: none;
+  border: none;
+  background: none;
+  color: inherit;
+}
+
+::-webkit-scrollbar {
+  width: 8px;
+  background: #f3f3f3;
+}
+::-webkit-scrollbar-thumb {
+  background: #e0e0e0;
+  border-radius: 4px;
+}
+
+/* Utility classes for black/white theme */
+.bg-black { background: #111 !important; color: #fff !important; }
+.bg-white { background: #fff !important; color: #111 !important; }
+.text-black { color: #111 !important; }
+.text-white { color: #fff !important; }
+.border-black { border-color: #111 !important; }
+.border-white { border-color: #fff !important; }
+
+/* Add smooth transitions for interactive elements */
+button, .btn, .playground-ui, .component-container, input, .tab {
+  transition: background 0.2s, color 0.2s, border 0.2s, box-shadow 0.2s;
+}
+
+/* Responsive helpers */
+@media (max-width: 600px) {
+  html, body {
+    font-size: 15px;
+  }
+}
