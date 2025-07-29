@@ -1,0 +1,14 @@
+# MongoDB connection string
+MONGODB_URI=
+
+# Redis connection string (optional)
+REDIS_URL=
+
+# JWT secret for authentication
+JWT_SECRET=
+
+# Gemini API key
+OPENROUTER_API_KEY=
+
+# Server port (optional)
+PORT=5050
